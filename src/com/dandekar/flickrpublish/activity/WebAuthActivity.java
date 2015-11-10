@@ -12,7 +12,6 @@ import com.dandekar.flickrpublish.flickr.AccessToken;
 import com.dandekar.flickrpublish.model.Session;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,16 +23,12 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class WebAuthActivity extends Activity
+public class WebAuthActivity extends BaseActivity
 {
 
 	private WebView webView;
 	
 	private Handler handler;
-	
-	private Session session;
-
-	private RequestQueue queue;
 	
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -42,10 +37,6 @@ public class WebAuthActivity extends Activity
 		super.onCreate(savedInstanceState);
 		// Assign layout
 		setContentView(R.layout.webauth);
-		// Get session
-		this.session = ((FotoPubApplication)getApplication()).session;
-		// Create request queue
-		queue = Volley.newRequestQueue(this);
 		// Create handler
 		handler = new Handler();
 		// Get URL from intent

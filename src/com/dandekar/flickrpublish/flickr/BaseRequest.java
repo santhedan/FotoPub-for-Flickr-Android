@@ -36,6 +36,16 @@ public abstract class BaseRequest
 	public String version;
 
 	public String signature;
+	
+	public String nojsoncallback;
+	
+	public String format;
+	
+	public String extra;
+	
+	public String method;
+	
+	public String authToken;
 
 	public abstract String getUrl();
 	
@@ -46,6 +56,9 @@ public abstract class BaseRequest
 		//
 		this.nonce = String.format("oauth_nonce=%d", ts);
 		this.timeStamp = String.format("oauth_timestamp=%d", ts);
+		//
+		this.nojsoncallback = "nojsoncallback=1";
+		this.format = "format=json";
 	}
 
 	public String calculateSignature(List<String> parameters, String key)
@@ -101,7 +114,7 @@ public abstract class BaseRequest
 			SecretKeySpec secret = new SecretKeySpec(key.getBytes(), mac.getAlgorithm());
 			mac.init(secret);
 			byte[] digest = mac.doFinal(input.getBytes());
-			return Base64.encodeToString(digest, Base64.DEFAULT);
+			return Base64.encodeToString(digest, Base64.DEFAULT | Base64.NO_PADDING);
 		}
 		catch (NoSuchAlgorithmException e)
 		{

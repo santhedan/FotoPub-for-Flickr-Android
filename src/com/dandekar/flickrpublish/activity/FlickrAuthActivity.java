@@ -9,9 +9,7 @@ import com.android.volley.toolbox.Volley;
 import com.dandekar.flickrpublish.Constants;
 import com.dandekar.flickrpublish.R;
 import com.dandekar.flickrpublish.flickr.RequestToken;
-import com.dandekar.flickrpublish.model.Session;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,24 +18,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class FlickrAuthActivity extends Activity
+public class FlickrAuthActivity extends BaseActivity
 {
 
-	private RequestQueue queue;
-	
-	private Session session;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		Log.i("FOTOPUB", "FlickrAuthActivity.onCreate");
-		// Get session
-		this.session = ((FotoPubApplication)getApplication()).session;
 		// Set layout
 		setContentView(R.layout.flickrauth);
-		// Create request queue
-		queue = Volley.newRequestQueue(this);
 		// Get button and add handler
 		final Button button = (Button) findViewById(R.id.cmdOpenWebPage);
 		button.setOnClickListener(new OnClickListener()
