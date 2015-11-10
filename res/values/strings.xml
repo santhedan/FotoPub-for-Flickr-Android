@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">FotoPub</string>
+    <string name="splash_name">FotoPub</string>
+    <string name="flickrauth_name">Authorize FotoPub</string>
+    <string name="photoset_name">Your Photo Sets</string>
+    <string name="content_description">FotoPub Image</string>
+    <string name="app_copyright">Copyright (&#169;) 2015 Sanjay Dandekar. All rights reserved.</string>
+    <string name="authorize_link">Authorize FotoPub for Flickr!</string>
+    <string name="authorize_help">Click the link above and login using your Flickr credentials to grant requested access to this application. The application is requesting access to your Flickr photos so that you can publish your outstanding photos to Flickr Groups as well as comment on some awsome work of other photographers in Flickr Groups. The application will not modify or delete your photos.</string>
+
+</resources>
