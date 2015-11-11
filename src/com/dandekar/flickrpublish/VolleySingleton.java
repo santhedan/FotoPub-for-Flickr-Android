@@ -1,20 +1,12 @@
 package com.dandekar.flickrpublish;
 
-import java.io.IOException;
-import java.util.Map;
-
-import org.apache.http.HttpResponse;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.HttpClientStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.http.AndroidHttpClient;
 import android.util.LruCache;
 
 public class VolleySingleton {
@@ -52,16 +44,16 @@ public class VolleySingleton {
 
 	public RequestQueue getRequestQueue() {
 		if (mRequestQueue == null) {
-			HttpClientStack stack = new HttpClientStack(AndroidHttpClient.newInstance("volley/0")) {
-				@Override
-				public HttpResponse performRequest(Request<?> request, Map<String, String> headers)
-						throws IOException, AuthFailureError {
-					return super.performRequest(request, headers);
-				}
-			};
+			/*HttpClientStack stack = new HttpClientStack(new DefaultHttpClient()){
+	            @Override
+	            public HttpResponse performRequest(Request<?> request, Map<String, String> headers)
+	                throws IOException, AuthFailureError {
+	                return super.performRequest(request, headers);
+	            }
+	        };;*/
 			// getApplicationContext() is key, it keeps you from leaking the
 			// Activity or BroadcastReceiver if someone passes one in.
-			mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext(), stack);
+			mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());//, stack);
 		}
 		return mRequestQueue;
 	}

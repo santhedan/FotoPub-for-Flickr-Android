@@ -1,6 +1,5 @@
 package com.dandekar.flickrpublish.flickr;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,14 +43,14 @@ public class PhotosetGetList extends BaseRequest {
 		parameters.add(this.version);
 		parameters.add(this.extra);
 		//
-		String signow = calculateSignature(parameters, this.consumerSecret);
+		String signow = calculateSignature(parameters, this.consumerSecret, true);
 		this.signature = String.format("oauth_signature=%s", signow);
 	}
 	
 	@Override
 	public String getUrl()
 	{
-		return String.format("%s?%s&%s&%s&%s&%s&%s&%s&%s&%s&%s&%s&%s", this.url, this.nojsoncallback, this.format, this.consumerKey, this.authToken, this.method, this.userId, this.nonce, this.timeStamp, this.signatureMethod, this.version, this.extra, URLEncoder.encode(this.signature));
+		return String.format("%s?%s&%s&%s&%s&%s&%s&%s&%s&%s&%s&%s&%s", this.url, this.nojsoncallback, this.format, this.consumerKey, this.authToken, this.method, this.userId, this.nonce, this.timeStamp, this.signatureMethod, this.version, this.extra, this.signature);
 	}
 
 }

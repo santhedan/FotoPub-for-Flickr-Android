@@ -13,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.lang3.StringUtils;
 
 import android.util.Base64;
+import android.util.Log;
 
 public abstract class BaseRequest
 {
@@ -61,7 +62,7 @@ public abstract class BaseRequest
 		this.format = "format=json";
 	}
 
-	public String calculateSignature(List<String> parameters, String key)
+	public String calculateSignature(List<String> parameters, String key, boolean encode)
 	{
 		try
 		{
@@ -78,10 +79,15 @@ public abstract class BaseRequest
 			// Append parameters in sorted order
 			String paramJoined = StringUtils.join(parameters, "&");
 			buffer.append(URLEncoder.encode(paramJoined, UTF8));
+			Log.e("PHOTOPUB", "String to Hash - " + buffer.toString());
 			// Compute HMACSHA1 and convert to BASE64
 			String base64Hash = computeHMACSHA1BASE64(buffer.toString(), key);
 			// Now replace any + with %2B
 			base64Hash = base64Hash.replace("+", "%2B");
+			if (encode)
+			{
+				base64Hash = URLEncoder.encode(base64Hash);
+			}
 			// Return value
 			return base64Hash;
 		}
@@ -114,7 +120,7 @@ public abstract class BaseRequest
 			SecretKeySpec secret = new SecretKeySpec(key.getBytes(), mac.getAlgorithm());
 			mac.init(secret);
 			byte[] digest = mac.doFinal(input.getBytes());
-			return Base64.encodeToString(digest, Base64.DEFAULT | Base64.NO_PADDING);
+			return Base64.encodeToString(digest, Base64.DEFAULT);
 		}
 		catch (NoSuchAlgorithmException e)
 		{

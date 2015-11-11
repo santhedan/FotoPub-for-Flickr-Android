@@ -3,6 +3,8 @@ package com.dandekar.flickrpublish.flickr;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 public class AccessToken extends BaseRequest {
 
 	private String token;
@@ -35,7 +37,7 @@ public class AccessToken extends BaseRequest {
 		parameters.add(this.version);
 		parameters.add(this.token);
 		//
-		String signow = calculateSignature(parameters, this.consumerSecret);
+		String signow = calculateSignature(parameters, this.consumerSecret, false);
 		this.signature = String.format("oauth_signature=%s", signow);
 
 	}
@@ -43,7 +45,9 @@ public class AccessToken extends BaseRequest {
 	@Override
 	public String getUrl()
 	{
-		return String.format("%s?%s&%s&%s&%s&%s&%s&%s&%s",this.url, this.nonce, this.timeStamp, this.verifier, this.consumerKey, this.signatureMethod, this.version, this.token, this.signature);
+		String url = String.format("%s?%s&%s&%s&%s&%s&%s&%s&%s",this.url, this.nonce, this.timeStamp, this.verifier, this.consumerKey, this.signatureMethod, this.version, this.token, this.signature);
+		Log.i("PHOTOPUB", "URL -> " + url);
+		return url;
 	}
 
 }

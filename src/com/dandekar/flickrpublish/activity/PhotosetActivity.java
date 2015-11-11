@@ -2,10 +2,13 @@ package com.dandekar.flickrpublish.activity;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.dandekar.flickrpublish.Constants;
@@ -50,12 +53,12 @@ public class PhotosetActivity extends BaseActivity
 		// Get the URL of the request
 		String url = photosetGetList.getUrl();
 		Log.i("FOTOPUB", "url -> " + url);
-		StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+		JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
 		    @Override
-		    public void onResponse(String response)
+		    public void onResponse(JSONObject response)
 		    {
-		    	Log.i("FOTOPUB", "response -> " + response);
+		    	Log.i("FOTOPUB", "response -> " + response.toString());
 		    }
 		}, new Response.ErrorListener() {
 

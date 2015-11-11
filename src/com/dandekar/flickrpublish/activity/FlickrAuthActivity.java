@@ -1,13 +1,12 @@
 package com.dandekar.flickrpublish.activity;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.dandekar.flickrpublish.Constants;
 import com.dandekar.flickrpublish.R;
+import com.dandekar.flickrpublish.VolleySingleton;
 import com.dandekar.flickrpublish.flickr.RequestToken;
 
 import android.content.Intent;
@@ -83,10 +82,12 @@ public class FlickrAuthActivity extends BaseActivity
 					public void onErrorResponse(VolleyError error)
 					{
 						Log.i("FOTOPUB", "That didn't work!");
+						error.printStackTrace();
 					}
 				});
 				// Add the request to the RequestQueue.
-				queue.add(stringRequest);
+				// Access the RequestQueue through your singleton class.
+				VolleySingleton.getInstance(FlickrAuthActivity.this).addToRequestQueue(stringRequest);
 			}
 		});
 	}
