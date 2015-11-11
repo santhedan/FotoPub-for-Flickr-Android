@@ -1,82 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/networkImageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:contentDescription="@string/content_description"
-        android:scaleType="centerInside"
-        android:src="@drawable/placeholder" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingTop="1dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/photosetName"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:maxLines="3" />
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/networkImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/content_description"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/placeholder" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/content_description"
-                android:scaleType="centerInside"
-                android:src="@drawable/photos" />
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/photosetPhotos"
+                android:id="@+id/photosetName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2.0"
-                android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:textSize="12sp" />
+                android:layout_height="30dp"
+                android:maxLines="3" />
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/content_description"
-                android:scaleType="centerInside"
-                android:src="@drawable/videos" />
-
-            <TextView
-                android:id="@+id/photosetVideos"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2.0"
-                android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:textSize="12sp" />
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/content_description"
-                android:scaleType="centerInside"
-                android:src="@drawable/views" />
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/content_description"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/photos" />
 
-            <TextView
-                android:id="@+id/photosetViews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2.0"
-                android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/photosetPhotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.0"
+                    android:maxLines="1"
+                    android:paddingLeft="5dp"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/content_description"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/videos" />
+
+                <TextView
+                    android:id="@+id/photosetVideos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.0"
+                    android:maxLines="1"
+                    android:paddingLeft="5dp"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/content_description"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/views" />
+
+                <TextView
+                    android:id="@+id/photosetViews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.0"
+                    android:maxLines="1"
+                    android:paddingLeft="5dp"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray"
+        android:paddingLeft="5dp" />
 
 </LinearLayout>
