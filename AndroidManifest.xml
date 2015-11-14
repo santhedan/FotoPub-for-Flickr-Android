@@ -33,6 +33,10 @@
             android:label="@string/photoset_name" >
         </activity>
         <activity
+            android:name=".activity.ThumbnailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+        </activity>
+        <activity
             android:name=".activity.FlickrAuthActivity"
             android:label="@string/flickrauth_name"
             android:screenOrientation="portrait" >

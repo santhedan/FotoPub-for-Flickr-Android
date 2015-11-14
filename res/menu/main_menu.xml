@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@+id/action_groups"
+          android:title="@string/menu_groups"
+          android:showAsAction="never"/>
+
+    <item android:id="@+id/action_explore"
+          android:title="@string/menu_explore"
+          android:showAsAction="never"/>
+
+    <item android:id="@+id/action_following"
+          android:title="@string/menu_following"
+          android:showAsAction="never"/>
+
+</menu>

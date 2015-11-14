@@ -19,16 +19,22 @@ import com.dandekar.flickrpublish.VolleySingleton;
 import com.dandekar.flickrpublish.flickr.PhotosetGetList;
 import com.dandekar.flickrpublish.model.PhotoSet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
-public class PhotosetActivity extends BaseActivity {
+public class PhotosetActivity extends BaseActivity implements OnItemClickListener {
 
 	private GridView photoSetGrid;
 
@@ -46,13 +52,15 @@ public class PhotosetActivity extends BaseActivity {
 		setContentView(R.layout.photoset);
 		// Get the grid view
 		this.photoSetGrid = (GridView) findViewById(R.id.photosetgrid);
+		// Set item click listener
+		this.photoSetGrid.setOnItemClickListener(this);
 		// Get the layout inflater
 		this.inflater = LayoutInflater.from(this);
 		// Configure adapter
 		adapter = new PhotosetAdapter();
 		photoSetGrid.setAdapter(adapter);
 		// Get the ImageLoader through your singleton class.
-		imageLoader = VolleySingleton.getInstance(this).getImageLoader();
+		imageLoader = VolleySingleton.getInstance(this).getDiskImageLoader();
 		// Create the photoset get request
 		PhotosetGetList photosetGetList = new PhotosetGetList(Constants.API_KEY, session.hmacSha1Key,
 				session.flickrToken, session.nsid);
@@ -76,6 +84,34 @@ public class PhotosetActivity extends BaseActivity {
 				});
 		// Access the RequestQueue through your singleton class.
 		VolleySingleton.getInstance(this).addToRequestQueue(request);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_groups:
+			Log.i("FOTOPUB", "Show groups");
+			break;
+
+		case R.id.action_explore:
+			Log.i("FOTOPUB", "Show explore");
+			break;
+
+		case R.id.action_following:
+			Log.i("FOTOPUB", "Show following");
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	protected void parsePhotosets(JSONObject response) {
@@ -176,5 +212,15 @@ public class PhotosetActivity extends BaseActivity {
 		TextView photos;
 		TextView videos;
 		TextView views;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+	{
+		// Start the thumbnail view activity using for viewing photoset photos
+		Intent intent = new Intent(this, ThumbnailActivity.class);
+		intent.putExtra(Constants.PHOTO_TYPE_EXTRA, ThumbnailActivity.PhotoType.PHOTOSET_PHOTOS.getNumVal());
+		intent.putExtra(Constants.PHOTOSET_ID_EXTRA, photosets.get(position).id);
+		startActivity(intent);
 	}
 }

@@ -9,4 +9,9 @@
     <string name="authorize_link">Authorize FotoPub for Flickr!</string>
     <string name="authorize_help">Click the link above and login using your Flickr credentials to grant requested access to this application. The application is requesting access to your Flickr photos so that you can publish your outstanding photos to Flickr Groups as well as comment on some awsome work of other photographers in Flickr Groups. The application will not modify or delete your photos.</string>
 
+    <string name="menu_explore">Flickr Explore</string>
+    <string name="menu_groups">Your Groups</string>
+    <string name="menu_following">Following</string>
+    <string name="cmd_view">View</string>
+    
 </resources>

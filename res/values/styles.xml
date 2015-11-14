@@ -17,4 +17,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <color name="background">#7fffff00</color>
+    <color name="btn_background">#757575</color>
+    <color name="btn_textcolor">#0000ff</color>
 </resources>

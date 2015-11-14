@@ -16,14 +16,17 @@
 package com.android.volley.toolbox;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.dandekar.flickrpublish.R;
 
 /**
  * Handles fetching an image from a URL as well as the life-cycle of the
@@ -36,7 +39,7 @@ public class NetworkImageView extends ImageView {
     /**
      * Resource ID of the image to be used as a placeholder until the network image is loaded.
      */
-    private int mDefaultImageId;
+    private int mDefaultImageId = R.drawable.placeholder;
 
     /**
      * Resource ID of the image to be used if the network response fails.
@@ -173,12 +176,13 @@ public class NetworkImageView extends ImageView {
                         }
 
                         if (response.getBitmap() != null) {
-                            setImageBitmap(response.getBitmap());
+                        	Bitmap scaledBM = Bitmap.createScaledBitmap(response.getBitmap(), getWidth(), getHeight(), false);
+                            setImageBitmap(scaledBM);
                         } else if (mDefaultImageId != 0) {
                             setImageResource(mDefaultImageId);
                         }
                     }
-                }, maxWidth, maxHeight, scaleType);
+                }, 0, 0, scaleType);
 
         // update the ImageContainer to be the new bitmap container.
         mImageContainer = newContainer;
@@ -197,6 +201,24 @@ public class NetworkImageView extends ImageView {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         loadImageIfNecessary(true);
+    }
+    
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    	Log.e("FOTOPUB", "Cell getHeight() -> " + getHeight());
+    	Log.e("FOTOPUB", "Cell getWidth() -> " + getWidth());
+    	Log.e("FOTOPUB", "Cell widthMeasureSpec -> " + widthMeasureSpec);
+    	Log.e("FOTOPUB", "Cell heightMeasureSpec -> " + heightMeasureSpec);
+    	if (getHeight() > getWidth())
+    	{
+    		setMeasuredDimension(getHeight(), getHeight());
+        	super.onMeasure(heightMeasureSpec, heightMeasureSpec);
+    	}
+    	else
+    	{
+    		setMeasuredDimension(getWidth(), getWidth());
+        	super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+    	}
     }
 
     @Override

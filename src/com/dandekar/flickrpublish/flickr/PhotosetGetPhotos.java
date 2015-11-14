@@ -1,0 +1,62 @@
+package com.dandekar.flickrpublish.flickr;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PhotosetGetPhotos extends BaseRequest {
+
+	private String userId;
+	
+	private String photosetId;
+
+	public PhotosetGetPhotos(String key, String secret, String token, String userId, String photosetId)
+	{
+		// Call base class CTOR
+		super();
+		// Store values
+		this.userId = userId;
+		this.photosetId = photosetId;
+		// Additional initialization
+        this.httpVerb = "GET";
+        this.url = "https://api.flickr.com/services/rest/";
+        this.version = "oauth_version=1.0";
+        this.signatureMethod = "oauth_signature_method=HMAC-SHA1";
+        //
+        this.consumerKey = String.format("oauth_consumer_key=%s", key);
+        this.consumerSecret = secret;
+        //
+        this.authToken = String.format("oauth_token=%s", token);
+        //
+        this.userId = String.format("user_id=%s", userId);
+        //
+        this.method = "method=flickr.photosets.getPhotos";
+        this.nojsoncallback = "nojsoncallback=1";
+        this.format = "format=json";
+        //
+        this.extra = "extras=url_s,views";
+        this.photosetId = String.format("photoset_id=%s", photosetId);
+        //
+        List<String> parameters = new ArrayList<String>();
+        parameters.add(this.nojsoncallback);
+        parameters.add(this.format);
+        parameters.add(this.consumerKey);
+        parameters.add(this.authToken);
+        parameters.add(this.method);
+        parameters.add(this.userId);
+        parameters.add(this.nonce);
+        parameters.add(this.timeStamp);
+        parameters.add(this.signatureMethod);
+        parameters.add(this.version);
+        parameters.add(this.extra);
+        parameters.add(this.photosetId);
+        //
+		String signow = calculateSignature(parameters, this.consumerSecret, true);
+		this.signature = String.format("oauth_signature=%s", signow);
+	}
+	
+	@Override
+	public String getUrl() {
+		return String.format("%s?%s&%s&%s&%s&%s&%s&%s&%s&%s&%s&%s&%s&%s", this.url, this.nojsoncallback, this.format, this.consumerKey, this.authToken, this.method, this.userId, this.signature, this.nonce, this.timeStamp, this.signatureMethod, this.version, this.extra, this.photosetId);
+	}
+
+}

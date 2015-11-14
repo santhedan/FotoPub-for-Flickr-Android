@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import com.android.volley.Request;
@@ -26,7 +27,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.dandekar.flickrpublish.VolleySingleton;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -65,7 +68,10 @@ public class ImageLoader {
 
     /** Runnable for in-flight response delivery. */
     private Runnable mRunnable;
-
+    
+    /** A flag to indicate if the images are stored on disk */
+    private boolean mSaveOnDisk = false;
+    
     /**
      * Simple cache adapter interface. If provided to the ImageLoader, it
      * will be used as an L1 cache before dispatch to Volley. Implementations
@@ -84,6 +90,19 @@ public class ImageLoader {
     public ImageLoader(RequestQueue queue, ImageCache imageCache) {
         mRequestQueue = queue;
         mCache = imageCache;
+        mSaveOnDisk = false;
+    }
+
+    /**
+     * Constructs a new ImageLoader.
+     * @param queue The RequestQueue to use for making image requests.
+     * @param imageCache The cache to use as an L1 cache.
+     * @param saveOnDisk A flag to indicate is images are stored on disk or not.
+     */
+    public ImageLoader(RequestQueue queue, ImageCache imageCache, boolean saveOnDisk) {
+        mRequestQueue = queue;
+        mCache = imageCache;
+        mSaveOnDisk = saveOnDisk;
     }
 
     /**
@@ -216,9 +235,32 @@ public class ImageLoader {
         Bitmap cachedBitmap = mCache.getBitmap(cacheKey);
         if (cachedBitmap != null) {
             // Return the cached bitmap.
+        	Log.i("PHOTOPUB", "requestUrl -> " + requestUrl);
             ImageContainer container = new ImageContainer(cachedBitmap, requestUrl, null, null);
             imageListener.onResponse(container, true);
             return container;
+        }
+        
+        if (mSaveOnDisk)
+        {
+	        // Load image from disk
+	        try {
+				Bitmap bitmap = VolleySingleton.getInstance().getBitmap(requestUrl.substring("https:/".length()));
+				if (bitmap != null)
+				{
+					// Return the cached bitmap.
+		        	Log.i("PHOTOPUB", "requestUrl -> " + requestUrl);
+		            ImageContainer container = new ImageContainer(bitmap, requestUrl, null, null);
+		            imageListener.onResponse(container, true);
+		            return container;
+				}
+				else
+				{
+					Log.i("FOTOPUB", "No image on disk");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         }
 
         // The bitmap did not exist in the cache, fetch it!
@@ -247,12 +289,22 @@ public class ImageLoader {
         return imageContainer;
     }
 
-    protected Request<Bitmap> makeImageRequest(String requestUrl, int maxWidth, int maxHeight,
+    protected Request<Bitmap> makeImageRequest(final String requestUrl, int maxWidth, int maxHeight,
             ScaleType scaleType, final String cacheKey) {
         return new ImageRequest(requestUrl, new Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
+            	// Store the file in internal folder
                 onGetImageSuccess(cacheKey, response);
+                if (mSaveOnDisk)
+                {
+	                // Save image on disk
+	                try {
+						VolleySingleton.getInstance().saveBitmapFile(requestUrl.substring("https:/".length()), response);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+                }
             }
         }, maxWidth, maxHeight, scaleType, Config.RGB_565, new ErrorListener() {
             @Override
