@@ -11,10 +11,12 @@ import android.util.Log;
 import com.dandekar.flickrpublish.R;
 import com.dandekar.flickrpublish.model.Session;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends Activity
+{
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash);
 		// Create the preference task
@@ -22,15 +24,18 @@ public class SplashActivity extends Activity {
 		task.execute();
 	}
 
-	private class GetPreferenceDataTask extends AsyncTask<Void, Void, Session> {
+	private class GetPreferenceDataTask extends AsyncTask<Void, Void, Session>
+	{
 		@Override
-		protected Session doInBackground(Void... params) {
+		protected Session doInBackground(Void... params)
+		{
 			// Get access to the shared preference and fetch flickr token
 			SharedPreferences preferences = SplashActivity.this.getSharedPreferences("FOTOPUB", Context.MODE_PRIVATE);
 			// Get the values of stored data is any
 			Boolean isAuthenticated = preferences.getBoolean("isAuthenticated", false);
 			// Is this client authenticated?
-			if (isAuthenticated) {
+			if (isAuthenticated)
+			{
 				// Yes - Now create session object and set its values
 				Session session = new Session();
 				//
@@ -49,22 +54,26 @@ public class SplashActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(Session result) {
+		protected void onPostExecute(Session result)
+		{
 			super.onPostExecute(result);
-			if (result != null && result.isValid()) {
+			if (result != null && result.isValid())
+			{
 				// Set the session object in application
 				FotoPubApplication app = (FotoPubApplication) getApplication();
 				app.session = result;
 				// Go to photoset listing screen
 				Intent intent = new Intent(getApplicationContext(), PhotosetActivity.class);
 				startActivity(intent);
-			} else {
+			}
+			else
+			{
 				// Go to authentication screen
 				Intent intent = new Intent(getApplicationContext(), FlickrAuthActivity.class);
 				startActivity(intent);
 			}
 			// Fihish the splash activity
-			Log.i("FOTOPUB", "Unloading splash screen");
+			Log.i("FOTOPUB","Unloading splash screen");
 			finish();
 		}
 	}
