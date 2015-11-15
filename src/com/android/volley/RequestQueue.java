@@ -94,7 +94,8 @@ public class RequestQueue {
     /** The cache dispatcher. */
     private CacheDispatcher mCacheDispatcher;
 
-    private List<RequestFinishedListener> mFinishedListeners =
+    @SuppressWarnings("rawtypes")
+	private List<RequestFinishedListener> mFinishedListeners =
             new ArrayList<RequestFinishedListener>();
 
     /**
@@ -272,7 +273,8 @@ public class RequestQueue {
      * <p>Releases waiting requests for <code>request.getCacheKey()</code> if
      *      <code>request.shouldCache()</code>.</p>
      */
-    <T> void finish(Request<T> request) {
+    @SuppressWarnings("unchecked")
+	<T> void finish(Request<T> request) {
         // Remove from the set of requests currently being processed.
         synchronized (mCurrentRequests) {
             mCurrentRequests.remove(request);

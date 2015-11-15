@@ -19,6 +19,7 @@ import com.dandekar.flickrpublish.VolleySingleton;
 import com.dandekar.flickrpublish.flickr.PhotosetGetPhotos;
 import com.dandekar.flickrpublish.model.Photo;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,6 +93,8 @@ public class ThumbnailActivity extends BaseActivity {
 				.getType(getIntent().getIntExtra(Constants.PHOTO_TYPE_EXTRA, PhotoType.PHOTOSET_PHOTOS.getNumVal()));
 		if (photoType == PhotoType.PHOTOSET_PHOTOS) {
 			photosetId = getIntent().getStringExtra(Constants.PHOTOSET_ID_EXTRA);
+			String title = getIntent().getStringExtra(Constants.PHOTOSET_NAME_EXTRA);
+			setTitle(title);
 			// Now create the get photoset photo request
 			PhotosetGetPhotos photosetGetPhotos = new PhotosetGetPhotos(Constants.API_KEY, session.hmacSha1Key,
 					session.flickrToken, session.nsid, photosetId);
@@ -116,6 +119,13 @@ public class ThumbnailActivity extends BaseActivity {
 			// Access the RequestQueue through your singleton class.
 			VolleySingleton.getInstance(this).addToRequestQueue(request);
 		}
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Load the adapter
+		adapter.notifyDataSetChanged();
 	}
 
 	protected void parsePhotosetPhotos(JSONObject response) {
@@ -183,13 +193,13 @@ public class ThumbnailActivity extends BaseActivity {
 				holder.viewCount = (TextView) convertView.findViewById(R.id.viewCount);
 				holder.photoName = (TextView) convertView.findViewById(R.id.photoName);
 				holder.cmdView = (Button) convertView.findViewById(R.id.viewCmd);
-				holder.cmdView.setTag(new Integer(position));
+				holder.cmdView.setTag(Integer.valueOf(position));
 				// Set tag
 				convertView.setTag(holder);
 			} else {
 				Log.i("FOTOPUB", "convertView IS NOT NULL");
 				holder = (ViewHolder) convertView.getTag();
-				holder.cmdView.setTag(new Integer(position));
+				holder.cmdView.setTag(Integer.valueOf(position));
 			}
 			// Now assign value
 			holder.viewCount.setText(String.valueOf(p.views));

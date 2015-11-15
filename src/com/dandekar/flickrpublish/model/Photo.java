@@ -46,5 +46,5 @@ public class Photo {
 				+ ", ownerName=" + ownerName + ", height=" + height + ", width=" + width + ", views=" + views
 				+ ", faves=" + faves + ", comments=" + comments + ", selected=" + selected + "]";
 	}
-	
+
 }

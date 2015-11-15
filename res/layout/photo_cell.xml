@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="150dp"
-    android:layout_height="200dp"
+    android:layout_height="180dp"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -29,6 +29,7 @@
                 android:layout_width="20dp"
                 android:layout_height="15dp"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/content_description"
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingLeft="5dp"
                 android:scaleType="centerInside"
@@ -57,8 +58,8 @@
     <Button
         android:id="@+id/viewCmd"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/btn_background"
+        android:layout_height="30dp"
+        android:background="@drawable/button_background"
         android:text="@string/cmd_view"
         android:textColor="@color/btn_textcolor" />
 

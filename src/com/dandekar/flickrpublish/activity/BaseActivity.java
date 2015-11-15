@@ -10,10 +10,9 @@ public abstract class BaseActivity extends Activity {
 	protected Session session;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Get session
-		this.session = ((FotoPubApplication)getApplication()).session;
+		this.session = ((FotoPubApplication) getApplication()).session;
 	}
 }

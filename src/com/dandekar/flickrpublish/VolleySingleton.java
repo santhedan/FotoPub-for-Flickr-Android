@@ -1,6 +1,5 @@
 package com.dandekar.flickrpublish;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,13 +26,11 @@ public class VolleySingleton {
 	private ImageLoader mDiskImageLoader;
 	private static Context mCtx;
 
-	private VolleySingleton(Context context)
-	{
+	private VolleySingleton(Context context) {
 		mCtx = context;
 		mRequestQueue = getRequestQueue();
 
-		mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache()
-		{
+		mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
 			private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(100);
 
 			@Override
@@ -46,8 +43,7 @@ public class VolleySingleton {
 				cache.put(url, bitmap);
 			}
 		});
-		mDiskImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache()
-		{
+		mDiskImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
 			private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(100);
 
 			@Override
@@ -78,7 +74,7 @@ public class VolleySingleton {
 			// getApplicationContext() is key, it keeps you from leaking the
 			// Activity or BroadcastReceiver if someone passes one in.
 			mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
-			
+
 		}
 		return mRequestQueue;
 	}
@@ -90,13 +86,12 @@ public class VolleySingleton {
 	public ImageLoader getImageLoader() {
 		return mImageLoader;
 	}
-	
+
 	public ImageLoader getDiskImageLoader() {
 		return mDiskImageLoader;
 	}
-	
-	public void saveBitmapFile(String fullPath, Bitmap bitmap) throws IOException
-	{
+
+	public void saveBitmapFile(String fullPath, Bitmap bitmap) throws IOException {
 		File filesDir = mCtx.getFilesDir();
 		Log.i("FOTOPUB", "filesDir -> " + filesDir.toString());
 		// Create full path
@@ -106,9 +101,8 @@ public class VolleySingleton {
 		File finalFullPathFile = new File(finalFullPath);
 		// Get parent
 		File parent = finalFullPathFile.getParentFile();
-		if(!parent.exists() && !parent.mkdirs())
-		{
-		    throw new FileNotFoundException("Couldn't create dir: " + parent);
+		if (!parent.exists() && !parent.mkdirs()) {
+			throw new FileNotFoundException("Couldn't create dir: " + parent);
 		}
 		Log.i("FOTOPUB", "parent -> " + parent.toString());
 		// Get bitmap bytes
@@ -122,9 +116,8 @@ public class VolleySingleton {
 		fos.close();
 		stream.close();
 	}
-	
-	public Bitmap getBitmap(String fullPath) throws IOException
-	{
+
+	public Bitmap getBitmap(String fullPath) throws IOException {
 		File filesDir = mCtx.getFilesDir();
 		Log.i("FOTOPUB", "filesDir -> " + filesDir.toString());
 		// Create full path
@@ -133,13 +126,12 @@ public class VolleySingleton {
 		// Get file object for finalFullPath
 		File finalFullPathFile = new File(finalFullPath);
 		// Check if the file exists
-		if (finalFullPathFile.exists())
-		{
+		if (finalFullPathFile.exists()) {
 			Log.i("FOTOPUB", "Bit map exists - loading");
 			FileInputStream fIn = new FileInputStream(finalFullPathFile);
-	        Bitmap bitmap = BitmapFactory.decodeStream(fIn);
-	        fIn.close();
-	        return bitmap;
+			Bitmap bitmap = BitmapFactory.decodeStream(fIn);
+			fIn.close();
+			return bitmap;
 		}
 		Log.i("FOTOPUB", "Bit map does not exists");
 		return null;

@@ -8,11 +8,10 @@ import android.util.Log;
 public class AccessToken extends BaseRequest {
 
 	private String token;
-	
+
 	private String verifier;
-	
-	public AccessToken(String key, String secret, String token, String verifier)
-	{
+
+	public AccessToken(String key, String secret, String token, String verifier) {
 		// Call base class CTOR
 		super();
 		//
@@ -23,11 +22,11 @@ public class AccessToken extends BaseRequest {
 		this.signatureMethod = "oauth_signature_method=HMAC-SHA1";
 		this.version = "oauth_version=1.0";
 		//
-        this.consumerSecret = secret;
-        //
-        this.token = String.format("oauth_token=%s", token);
-        this.verifier = String.format("oauth_verifier=%s", verifier);
-        //		//
+		this.consumerSecret = secret;
+		//
+		this.token = String.format("oauth_token=%s", token);
+		this.verifier = String.format("oauth_verifier=%s", verifier);
+		// //
 		List<String> parameters = new ArrayList<String>();
 		parameters.add(this.nonce);
 		parameters.add(this.timeStamp);
@@ -41,11 +40,11 @@ public class AccessToken extends BaseRequest {
 		this.signature = String.format("oauth_signature=%s", signow);
 
 	}
-	
+
 	@Override
-	public String getUrl()
-	{
-		String url = String.format("%s?%s&%s&%s&%s&%s&%s&%s&%s",this.url, this.nonce, this.timeStamp, this.verifier, this.consumerKey, this.signatureMethod, this.version, this.token, this.signature);
+	public String getUrl() {
+		String url = String.format("%s?%s&%s&%s&%s&%s&%s&%s&%s", this.url, this.nonce, this.timeStamp, this.verifier,
+				this.consumerKey, this.signatureMethod, this.version, this.token, this.signature);
 		Log.i("PHOTOPUB", "URL -> " + url);
 		return url;
 	}
