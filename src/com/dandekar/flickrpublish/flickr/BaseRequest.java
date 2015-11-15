@@ -15,8 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import android.util.Base64;
 import android.util.Log;
 
-public abstract class BaseRequest
-{
+public abstract class BaseRequest {
 
 	public static final String UTF8 = "UTF-8";
 
@@ -37,21 +36,20 @@ public abstract class BaseRequest
 	public String version;
 
 	public String signature;
-	
+
 	public String nojsoncallback;
-	
+
 	public String format;
-	
+
 	public String extra;
-	
+
 	public String method;
-	
+
 	public String authToken;
 
 	public abstract String getUrl();
-	
-	public BaseRequest()
-	{
+
+	public BaseRequest() {
 		// timestamp
 		long ts = System.currentTimeMillis();
 		//
@@ -62,10 +60,8 @@ public abstract class BaseRequest
 		this.format = "format=json";
 	}
 
-	public String calculateSignature(List<String> parameters, String key, boolean encode)
-	{
-		try
-		{
+	public String calculateSignature(List<String> parameters, String key, boolean encode) {
+		try {
 			// First sort the incoming list
 			Collections.sort(parameters);
 			// Buffer to build URL
@@ -84,50 +80,37 @@ public abstract class BaseRequest
 			String base64Hash = computeHMACSHA1BASE64(buffer.toString(), key);
 			// Now replace any + with %2B
 			base64Hash = base64Hash.replace("+", "%2B");
-			if (encode)
-			{
+			if (encode) {
 				base64Hash = URLEncoder.encode(base64Hash);
 			}
 			// Return value
 			return base64Hash;
-		}
-		catch (UnsupportedEncodingException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public String encodeUrl(String urlToEncode)
-	{
-		try
-		{
-			return URLEncoder.encode(urlToEncode, UTF8);
-		}
-		catch (UnsupportedEncodingException e)
-		{
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	private String computeHMACSHA1BASE64(String input, String key)
-	{
-		try
-		{
+	public String encodeUrl(String urlToEncode) {
+		try {
+			return URLEncoder.encode(urlToEncode, UTF8);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private String computeHMACSHA1BASE64(String input, String key) {
+		try {
 			// Create HMACSHA1 with supplied key
 			Mac mac = Mac.getInstance("HmacSHA1");
 			SecretKeySpec secret = new SecretKeySpec(key.getBytes(), mac.getAlgorithm());
 			mac.init(secret);
 			byte[] digest = mac.doFinal(input.getBytes());
 			return Base64.encodeToString(digest, Base64.DEFAULT);
-		}
-		catch (NoSuchAlgorithmException e)
-		{
+		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-		}
-		catch (InvalidKeyException e)
-		{
+		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		}
 		return null;

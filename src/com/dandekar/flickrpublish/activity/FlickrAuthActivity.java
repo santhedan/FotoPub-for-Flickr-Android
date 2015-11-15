@@ -17,23 +17,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class FlickrAuthActivity extends BaseActivity
-{
+public class FlickrAuthActivity extends BaseActivity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i("FOTOPUB", "FlickrAuthActivity.onCreate");
 		// Set layout
 		setContentView(R.layout.flickrauth);
 		// Get button and add handler
 		final Button button = (Button) findViewById(R.id.cmdOpenWebPage);
-		button.setOnClickListener(new OnClickListener()
-		{
+		button.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				// Disable button
 				button.setEnabled(false);
 				// Create RequestToken object
@@ -42,33 +38,31 @@ public class FlickrAuthActivity extends BaseActivity
 				String url = reqToken.getUrl();
 				// Now use volley library to execute the get request
 				// Request a string response from the provided URL.
-				StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
-				{
+				StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+						new Response.Listener<String>() {
 					@Override
-					public void onResponse(String response)
-					{
+					public void onResponse(String response) {
 						Log.i("FOTOPUB", "Response is: " + response);
 						// First split the response by &
 						String[] components = response.split("&");
-						// Now iterate over the components and get token and secret
-						for (String component : components)
-						{
-							//split the component using =
+						// Now iterate over the components and get token and
+						// secret
+						for (String component : components) {
+							// split the component using =
 							String[] keyValue = component.split("=");
 							String key = keyValue[0];
 							String value = keyValue[1];
 							//
-							if (key.contentEquals("oauth_token"))
-							{
+							if (key.contentEquals("oauth_token")) {
 								session.flickrToken = value;
 							}
-							if (key.contentEquals("oauth_token_secret"))
-							{
+							if (key.contentEquals("oauth_token_secret")) {
 								session.flickrSecret = value;
 							}
 						}
 						// form url from the above
-						String url = String.format("https://www.flickr.com/services/oauth/authorize?oauth_token=%s", session.flickrToken);
+						String url = String.format("https://www.flickr.com/services/oauth/authorize?oauth_token=%s",
+								session.flickrToken);
 						// Now start the web auth activity
 						Intent intent = new Intent(getApplicationContext(), WebAuthActivity.class);
 						intent.putExtra(Constants.URL_EXTRA, url);
@@ -76,11 +70,9 @@ public class FlickrAuthActivity extends BaseActivity
 						// Now finish this activity
 						finish();
 					}
-				}, new Response.ErrorListener()
-				{
+				}, new Response.ErrorListener() {
 					@Override
-					public void onErrorResponse(VolleyError error)
-					{
+					public void onErrorResponse(VolleyError error) {
 						Log.i("FOTOPUB", "That didn't work!");
 						error.printStackTrace();
 					}
@@ -93,8 +85,7 @@ public class FlickrAuthActivity extends BaseActivity
 	}
 
 	@Override
-	protected void onNewIntent(Intent intent)
-	{
+	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		// Set the intent
 		Uri uri = intent.getData();
@@ -102,8 +93,7 @@ public class FlickrAuthActivity extends BaseActivity
 	}
 
 	@Override
-	protected void onResume()
-	{
+	protected void onResume() {
 		super.onResume();
 		// Get intent
 		Intent intent = getIntent();

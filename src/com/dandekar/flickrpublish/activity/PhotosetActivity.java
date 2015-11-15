@@ -43,7 +43,7 @@ public class PhotosetActivity extends BaseActivity implements OnItemClickListene
 	private LayoutInflater inflater;
 
 	private ImageLoader imageLoader;
-	
+
 	private PhotosetAdapter adapter;
 
 	@Override
@@ -85,14 +85,14 @@ public class PhotosetActivity extends BaseActivity implements OnItemClickListene
 		// Access the RequestQueue through your singleton class.
 		VolleySingleton.getInstance(this).addToRequestQueue(request);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -190,8 +190,7 @@ public class PhotosetActivity extends BaseActivity implements OnItemClickListene
 				Log.i("FOTOPUB", "convertView IS NOT NULL");
 				holder = (ViewHolder) convertView.getTag();
 			}
-			if (holder.photosetName == null)
-			{
+			if (holder.photosetName == null) {
 				Log.i("FOTOPUB", "holder.photosetName IS NULL");
 			}
 			// Now assign the values
@@ -215,8 +214,7 @@ public class PhotosetActivity extends BaseActivity implements OnItemClickListene
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-	{
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// Start the thumbnail view activity using for viewing photoset photos
 		Intent intent = new Intent(this, ThumbnailActivity.class);
 		intent.putExtra(Constants.PHOTO_TYPE_EXTRA, ThumbnailActivity.PhotoType.PHOTOSET_PHOTOS.getNumVal());

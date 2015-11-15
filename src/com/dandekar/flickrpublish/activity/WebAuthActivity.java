@@ -22,17 +22,15 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class WebAuthActivity extends BaseActivity
-{
+public class WebAuthActivity extends BaseActivity {
 
 	private WebView webView;
-	
+
 	private Handler handler;
-	
+
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Assign layout
 		setContentView(R.layout.webauth);
@@ -44,15 +42,13 @@ public class WebAuthActivity extends BaseActivity
 		webView = (WebView) findViewById(R.id.webView);
 		webView.getSettings().setJavaScriptEnabled(true);
 		// Set the current activity as the request handler
-		webView.setWebViewClient(new WebViewClient()
-		{
+		webView.setWebViewClient(new WebViewClient() {
 			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url)
-			{
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				Log.e("FotoPub", "URL -> " + url);
-				if (url != null && url.startsWith(Constants.CALL_BACK_URL))
-				{
-					// The URL is of the form https://flickrpublish/?oauth_token=<token>&oauth_verifier=<verifier>
+				if (url != null && url.startsWith(Constants.CALL_BACK_URL)) {
+					// The URL is of the form
+					// https://flickrpublish/?oauth_token=<token>&oauth_verifier=<verifier>
 					// So remove the first part
 					String params = url.substring("https://flickrpublish/?".length());
 					Log.i("PHOTOPUB", "params -> " + params);
@@ -62,11 +58,9 @@ public class WebAuthActivity extends BaseActivity
 					final String token = parameters[0].split("=")[1];
 					final String verifier = parameters[1].split("=")[1];
 					//
-					handler.post(new Runnable()
-					{
+					handler.post(new Runnable() {
 						@Override
-						public void run()
-						{
+						public void run() {
 							getAccessToken(token, verifier);
 						}
 					});
@@ -78,49 +72,40 @@ public class WebAuthActivity extends BaseActivity
 		// Load URL
 		webView.loadUrl(url);
 	}
-	
-	private void getAccessToken(String token, String verifier)
-	{
+
+	private void getAccessToken(String token, String verifier) {
 		// Create new secret
 		String secret = String.format("%s&%s", Constants.SECRET, session.flickrSecret);
 		// Now create AccessToken object
 		AccessToken accessToken = new AccessToken(Constants.API_KEY, secret, token, verifier);
 		// Get the URL
 		String url = accessToken.getUrl();
-		StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
-		{
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 			@Override
-			public void onResponse(String response)
-			{
+			public void onResponse(String response) {
 				Log.i("FOTOPUB", "Response is: " + response);
 				// First split the response by &
 				String[] components = response.split("&");
 				// Now iterate over the components and get token and secret
-				for (String component : components)
-				{
-					//split the component using =
+				for (String component : components) {
+					// split the component using =
 					String[] keyValue = component.split("=");
 					String key = keyValue[0];
 					String value = keyValue[1];
 					//
-					if (key.contentEquals("oauth_token"))
-					{
+					if (key.contentEquals("oauth_token")) {
 						session.flickrToken = value;
 					}
-					if (key.contentEquals("oauth_token_secret"))
-					{
+					if (key.contentEquals("oauth_token_secret")) {
 						session.flickrSecret = value;
 					}
-					if (key.contentEquals("fullname"))
-					{
+					if (key.contentEquals("fullname")) {
 						session.fullName = value;
 					}
-					if (key.contentEquals("user_nsid"))
-					{
+					if (key.contentEquals("user_nsid")) {
 						session.nsid = value;
 					}
-					if (key.contentEquals("username"))
-					{
+					if (key.contentEquals("username")) {
 						session.userName = value;
 					}
 				}
@@ -131,15 +116,13 @@ public class WebAuthActivity extends BaseActivity
 				startActivity(intent);
 				// Start the save pref async task
 				SavePreferenceData spd = new SavePreferenceData();
-				spd.execute(new Session[] {session});
+				spd.execute(new Session[] { session });
 				// Now finish this activity
 				finish();
 			}
-		}, new Response.ErrorListener()
-		{
+		}, new Response.ErrorListener() {
 			@Override
-			public void onErrorResponse(VolleyError error)
-			{
+			public void onErrorResponse(VolleyError error) {
 				Log.i("FOTOPUB", "That didn't work!");
 			}
 		});
@@ -147,9 +130,9 @@ public class WebAuthActivity extends BaseActivity
 		// Access the RequestQueue through your singleton class.
 		VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
 	}
-	
+
 	private class SavePreferenceData extends AsyncTask<Session, Void, Void> {
-		
+
 		@Override
 		protected Void doInBackground(Session... params) {
 			// Get Session object
@@ -171,7 +154,7 @@ public class WebAuthActivity extends BaseActivity
 			Log.i("FOTOPUB", "Session data saved");
 			return null;
 		}
-		
+
 	}
-	
+
 }

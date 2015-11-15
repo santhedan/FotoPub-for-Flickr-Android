@@ -1,8 +1,7 @@
 package com.dandekar.flickrpublish.model;
 
-public class PhotoSet
-{
-	
+public class PhotoSet {
+
 	public String id;
 
 	public String name;
@@ -15,8 +14,7 @@ public class PhotoSet
 
 	public String photosetPhotoUrl;
 
-	public PhotoSet(String id, String name, String photos, String videos, String views, String photosetPhotoUrl)
-	{
+	public PhotoSet(String id, String name, String photos, String videos, String views, String photosetPhotoUrl) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -31,5 +29,5 @@ public class PhotoSet
 		return "PhotoSet [id=" + id + ", name=" + name + ", photos=" + photos + ", videos=" + videos + ", views="
 				+ views + ", photosetPhotoUrl=" + photosetPhotoUrl + "]";
 	}
-	
+
 }
